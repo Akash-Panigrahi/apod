@@ -1,0 +1,86 @@
+<section class="hero">
+  <article class="hero__apod" (click)="setApod(apods.today)">
+    <div class="hero__media">
+      <picture class="hero__picture" *ngIf="apods.today.media_type=='image'">
+        <img class="picture__image" [src]="apods.today.url" [alt]="apods.today.title">
+      </picture>
+
+      <iframe class="picture__video" *ngIf="apods.today.media_type=='video'" [src]="_sanitize.bypassSecurityTrustResourceUrl(apods.today.url)"
+        [name]="apods.today.title" allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="title__overlay">
+      <h2 class="picture__title" [title]="apods.today.title">{{ apods.today.title }}</h2>
+      <span class="picture__date">{{ apods.today.date }}</span>
+    </div>
+
+    <!-- <div class="ribbon">
+      <span class="ribbon__strip--long-towel">
+        ...
+        <br>Of
+        <br>The
+        <br>Day!
+      </span>
+    </div> -->
+  </article>
+
+  <aside class="old__apods">
+    <article class="old__apod" (click)="setApod(apods.yesterday)">
+      <div class="apod-container">
+        <div class="hero__media">
+          <picture class="hero__picture" *ngIf="apods.yesterday.media_type=='image'">
+            <img class="picture__image" [src]="apods.yesterday.url" [alt]="apods.yesterday.title">
+          </picture>
+
+          <iframe class="picture__video" *ngIf="apods.yesterday.media_type=='video'" [src]="_sanitize.bypassSecurityTrustResourceUrl(apods.yesterday.url)"
+            [name]="apods.yesterday.title" allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="title__overlay">
+          <h2 class="picture__title" [title]="apods.yesterday.title">{{ apods.yesterday.title }}</h2>
+          <span class="picture__date">{{ apods.yesterday.date }}</span>
+        </div>
+      </div>
+    </article>
+    <div class="apods__separator"></div>
+    <article class="old__apod" (click)="setApod(apods.twoDaysBefore)">
+      <div class="apod-container">
+        <div class="hero__media">
+          <picture class="hero__picture" *ngIf="apods.twoDaysBefore.media_type=='image'">
+            <img class="picture__image" [src]="apods.twoDaysBefore.url" [alt]="apods.twoDaysBefore.title">
+          </picture>
+
+          <iframe class="picture__video" *ngIf="apods.twoDaysBefore.media_type=='video'" [src]="_sanitize.bypassSecurityTrustResourceUrl(apods.twoDaysBefore.url)"
+            [name]="apods.twoDaysBefore.title" allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="title__overlay">
+          <h2 class="picture__title" [title]="apods.twoDaysBefore.title">{{ apods.twoDaysBefore.title }}</h2>
+          <span class="picture__date">{{ apods.twoDaysBefore.date }}</span>
+        </div>
+      </div>
+    </article>
+    <div class="apods__separator"></div>
+    <article class="old__apod" (click)="setApod(apods.threeDaysBefore)">
+      <div class="apod-container">
+        <div class="hero__media">
+          <picture class="hero__picture" *ngIf="apods.threeDaysBefore.media_type=='image'">
+            <img class="picture__image" [src]="apods.threeDaysBefore.url" [alt]="apods.threeDaysBefore.title">
+          </picture>
+
+          <iframe class="picture__video" *ngIf="apods.threeDaysBefore.media_type=='video'" [src]="_sanitize.bypassSecurityTrustResourceUrl(apods.threeDaysBefore.url)"
+            [name]="apods.threeDaysBefore.title" allowfullscreen>
+          </iframe>
+        </div>>
+
+        <div class="title__overlay">
+          <h2 class="picture__title" [title]="apods.threeDaysBefore.title">{{ apods.threeDaysBefore.title }}</h2>
+          <span class="picture__date">{{ apods.threeDaysBefore.date }}</span>
+        </div>
+      </div>
+    </article>
+  </aside>
+</section>

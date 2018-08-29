@@ -1,0 +1,381 @@
+@import "../../assets/styles/variables";
+@import "../../assets/styles/breakpoints";
+
+@mixin apod {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex: 1;
+}
+
+@mixin flex--centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+:host {
+  flex: 1;
+  display: flex;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+
+  @include for-tablet-landscape-down {
+    flex-direction: column;
+  }
+}
+
+.apod-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  @include for-phone-only {
+    flex-direction: row-reverse;
+    flex: none;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.hero__media {
+  @include flex--centered;
+
+  @include for-phone-only {
+    flex-direction: row;
+  }
+}
+
+.picture__video {
+  @include flex--centered;
+  @include for-tablet-landscape-down {
+    border-radius: 5px;
+  }
+}
+
+.picture__image {
+  @include flex--centered;
+
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.title__overlay {
+  font-size: 6rem;
+  padding: 20px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  color: white;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.picture__date {
+  font-size: 1.6rem;
+  margin-top: 1rem;
+}
+
+.hero__apod {
+  @include apod;
+
+  flex: 7;
+  margin: 0 10px;
+
+  @include for-tablet-landscape-down {
+    margin-bottom: 10px;
+    flex-direction: row;
+  }
+
+
+  @include for-phone-only {
+    flex: none;
+  }
+
+
+  .hero__media,
+  .hero__picture {
+    @include flex--centered;
+
+    @include for-tablet-landscape-down {
+      width: auto;
+      flex: 66.66%;
+      border-radius: 0;
+    }
+
+
+    @include for-phone-only {
+      flex: 1;
+    }
+  }
+
+  .picture__image {
+    @include for-tablet-landscape-down {
+      border-radius: 5px 0 0 5px;
+    }
+
+
+    @include for-phone-only {
+      border-radius: 5px;
+    }
+  }
+
+  .title__overlay {
+    @include for-tablet-landscape-down {
+      flex: 33.33%;
+      position: relative;
+      width: auto;
+      height: auto;
+      background: white;
+      color: $black;
+      border-radius: 0 5px 5px 0;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+
+    @include for-tablet-portrait-down {
+      position: absolute;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 1));
+      border-radius: 0;
+      color: white;
+      justify-content: flex-end;
+      align-items: flex-end;
+      width: 100%;
+    }
+  }
+
+  .picture__title {
+    @include for-tablet-portrait-down {
+      font-size: 3.6rem;
+    }
+  }
+
+  .picture__date {
+    font-size: 2.4rem;
+
+    @include for-tablet-portrait-down {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.old__apods {
+  flex: 3;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+
+  @include for-tablet-landscape-down {
+    flex-direction: row;
+    margin-left: 10px;
+    background: transparent;
+  }
+
+
+  @include for-phone-only {
+    flex-direction: column;
+    flex: none;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 5px 5px 0 5px;
+  }
+
+
+  .old__apod {
+    @include apod;
+
+    margin-bottom: 10px;
+
+    @include for-tablet-landscape-down {
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
+
+
+    @include for-phone-only {
+      margin-bottom: 10px;
+      margin-right: 0;
+      height: 200px;
+      padding: 10px;
+      justify-content: center;
+    }
+
+
+    &:last-child {
+      margin-bottom: 0;
+
+      @include for-tablet-landscape-down {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .apods__separator {
+    display: none;
+
+    @include for-phone-only {
+      display: block;
+      height: 1px;
+      width: 100%;
+      margin: auto;
+      background-color: #eeeeee;
+    }
+  }
+
+  .picture__image,
+  .picture__video {
+    @include for-phone-only {
+      width: 130px;
+      height: 130px;
+    }
+  }
+
+  .hero__media,
+  .hero__picture {
+    @include flex--centered;
+
+    @include for-phone-only {
+      width: auto;
+      height: auto;
+    }
+  }
+
+  .title__overlay {
+    padding: 10px;
+    font-size: 2.4rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    @include for-tablet-landscape-down {
+      border-radius: 5px;
+    }
+
+
+    @include for-phone-only {
+      position: relative;
+      width: auto;
+      height: auto;
+      padding: 0;
+      margin-right: 10px;
+      background: none;
+      color: $black;
+    }
+
+
+    .picture__title {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+
+      @include for-phone-only {
+        border-radius: 5px;
+        white-space: normal;
+      }
+    }
+  }
+
+  .picture__overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to right, transparent 0, white);
+
+    @include for-tablet-landscape-down {
+      border-radius: 5px;
+    }
+  }
+}
+
+.ribbon {
+  float: left;
+  position: absolute;
+  background-size: cover;
+  text-transform: uppercase;
+  color: $black;
+}
+
+.ribbon:nth-child(even) {
+  margin-right: 4%;
+}
+
+.ribbon__strip--long-towel {
+  width: 80px;
+  padding: 10px 0;
+  position: absolute;
+  top: -6px;
+  left: 25px;
+  border-top-left-radius: 3px;
+  background: $yellow;
+  line-height: 1.2;
+  font-size: 2.4rem;
+  padding: 10px;
+}
+
+.ribbon__strip--long-towel:before {
+  height: 0;
+  width: 0;
+  right: -6px;
+  top: 0.1px;
+  border-bottom: 6px solid $darkyellow;
+  border-right: 6px solid transparent;
+}
+
+.ribbon__strip--long-towel:before,
+.ribbon__strip--long-towel:after {
+  content: "";
+  position: absolute;
+}
+
+.ribbon__strip--long-towel:after {
+  height: 0;
+  width: 0;
+  bottom: -40px;
+  left: 0;
+  border-left: 40px solid $yellow;
+  border-right: 40px solid $yellow;
+  border-bottom: 40px solid transparent;
+}
+
+.ribbon__strip--left-towel {
+  position: absolute;
+  padding: 8px 10px;
+  white-space: nowrap;
+  background: $yellow;
+  font-size: 2rem;
+  box-shadow: -1px 2px 3px rgba(0, 0, 0, 0.3);
+
+  @include for-tablet-portrait-down {
+    white-space: normal;
+  }
+
+
+  @include for-phone-only {
+    white-space: nowrap;
+  }
+}
+
+.ribbon__strip--left-towel:after {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  top: 0;
+  right: -10px;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 10px solid $yellow;
+}

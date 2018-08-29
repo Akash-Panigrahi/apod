@@ -1,0 +1,112 @@
+<!-- <section class="apod-hero">
+  <article class="apod-hero__card">
+    <div class="apod-card__header">
+      <h3 class="apod__title">
+        {{ apod.title }}
+      </h3>
+      <time class="apod__date">
+        {{ apod.date }}
+      </time>
+    </div>
+
+    <div class="apod-card__media" id="focal">
+      <div class="apod__media">
+        <div class="apod-media__wrapper">
+          <figure class="apod__figure">
+            <picture class="apod__picture" *ngIf="apod.media_type=='image'">
+              <div class="apod-picture__wrapper">
+                <img class="picture__image" [src]="apod.url" [alt]="apod.title" (click)="openPictureDialog()">
+              </div>
+            </picture>
+
+            <iframe class="picture__video" *ngIf="apod.media_type=='video'" [src]="_sanitize.bypassSecurityTrustResourceUrl(apod.url)"
+              [name]="apod.title" allowfullscreen>
+            </iframe>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="apod-card__author-actions">
+      <div *ngIf="apod.copyright" class="apod__author">
+        By: {{ apod.copyright }}
+      </div>
+      <div class="apod__actions">
+        <div class="load-hd-apod" *ngIf="apod.hdurl">
+          <mat-slide-toggle color="primary">Load HD</mat-slide-toggle>
+        </div>
+        <div class="download-apod">
+          <div class="download__action" *ngIf="!apod.copyright">
+            <button>Download</button>
+          </div>
+          <p class="sorry-no-download" *ngIf="apod.copyright">
+            Sorry! You can see, but you can't keep!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="apod-card__explanation">
+      <p class="apod__explanation">
+        {{ apod.explanation }}
+      </p>
+    </div>
+
+  </article>
+</section> -->
+
+<article class="apod-hero">
+  <section class="apod__media-container" id="focal">
+    <div class="apod__media-wrapper">
+      <div class="apod__media">
+        <figure class="apod__figure">
+          <picture class="apod__picture" *ngIf="apod.media_type=='image'">
+            <div class="apod__image-wrapper">
+              <img class="apod__image" [src]="apod.url" [alt]="apod.title" (click)="openPictureDialog()">
+            </div>
+
+            <div class="apod__video-wrapper">
+              <iframe class="apod__video" *ngIf="apod.media_type=='video'" [src]="_sanitize.bypassSecurityTrustResourceUrl(apod.url)" [name]="apod.title"
+                allowfullscreen>
+              </iframe>
+            </div>
+          </picture>
+
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="apod__details">
+    <div class="apod__header">
+      <h3 class="apod__title">
+        {{ apod.title }}
+      </h3>
+      <time class="apod__date">
+        {{ apod.date }}
+      </time>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="apod__author-actions" *ngIf="apod.copyright || apod.hdurl">
+      <div class="apod__author">
+        <h2 class="author__name" *ngIf="apod.copyright">
+          By:
+          <br> {{ apod.copyright }}
+        </h2>
+      </div>
+      <div class="apod__actions">
+        <div class="load-hd-apod" *ngIf="apod.hdurl">
+          <mat-slide-toggle color="primary">Load HD</mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+
+    <div class="apod__explanation">
+      <p class="apod__text">
+        {{ apod.explanation }}
+      </p>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,44 @@
+@import "./assets/styles/reset";
+@import "./assets/styles/variables";
+@import "./assets/styles/breakpoints";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~ng2-slim-loading-bar/style.css";
+
+html,
+body {
+  min-height: 100vh;
+  max-width: 100%;
+  font-family: 'Roboto', 'Open Sans', sans-serif;
+  position: relative;
+  font-size: 10px;
+
+  @include for-tablet-portrait-down {
+    height: auto;
+  }
+}
+
+body > * {
+  height: inherit;
+}
+
+@mixin almost-invisible {
+  width: 0 !important;
+  height: 0 !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  visibility: hidden !important;
+  line-height: 0 !important;
+}
+
+// hiding datepicker input field
+.datepicker__input {
+  @include almost-invisible;
+
+  * {
+    @include almost-invisible;
+  }
+}
+.blurred {
+  filter: blur(20px);
+}
