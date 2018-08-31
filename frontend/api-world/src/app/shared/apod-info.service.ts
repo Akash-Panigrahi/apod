@@ -5,7 +5,7 @@ import { Apod } from '../models/apod.model';
 @Injectable({
   providedIn: 'root'
 })
-export class ApodService {
+export class ApodInfoService {
   private oneDaySource = new BehaviorSubject({});
   oneDayInfo$ = this.oneDaySource.asObservable();
 

@@ -7,7 +7,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { AstronomyPictureOf } from '../models/astronomy-picture-of.model';
 import { Apod } from '../models/apod.model';
 
-import { ApodService } from '../shared/apod.service';
+import { ApodInfoService } from '../shared/apod-info.service';
 import { HomeComponent } from './../home/home.component';
 
 @Component({
@@ -23,15 +23,15 @@ export class HeroComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     private _sanitize: DomSanitizer,
     private _router: Router,
-    private _apod: ApodService,
-    private _home: HomeComponent
+    private _apodInfo: ApodInfoService,
+    private _home: HomeComponent,
   ) { }
 
   ngOnInit() {
     // from resolver service
     this.apods = new AstronomyPictureOf(...this._route.snapshot.data.apod);
 
-    this.fourDaysInfo$ = this._apod.fourDaysInfo$
+    this.fourDaysInfo$ = this._apodInfo.fourDaysInfo$
       .subscribe((data: Array<Apod>) => {
         if (data.length) {
           this.apods = new AstronomyPictureOf(...data);
@@ -43,6 +43,9 @@ export class HeroComponent implements OnInit, OnDestroy {
     this._home.apodOriginDate = new FormControl(new Date(apod.date));
     localStorage.setItem('origin-date', JSON.stringify(apod.date));
     localStorage.setItem('apod', JSON.stringify(apod));
+
+    this._apodInfo.setOneDayInfo(apod);
+
     this._router.navigate(['apod']);
   }
 

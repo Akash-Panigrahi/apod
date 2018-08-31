@@ -20,7 +20,7 @@ import { Apod } from '../models/apod.model';
 
 /* Services */
 import { StorageService } from '../shared/storage.service';
-import { ApodService } from '../shared/apod.service';
+import { ApodInfoService } from '../shared/apod-info.service';
 import { WindowResizedService } from '../shared/window-resized.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { HomeService } from './home.service';
@@ -47,12 +47,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private _router: Router,
     private _storage: StorageService,
-    private _apod: ApodService,
+    private _apodInfo: ApodInfoService,
     private _windowResizedService: WindowResizedService,
     private _loadingBar: SlimLoadingBarService,
     private _el: ElementRef,
     private _renderer: Renderer2,
-    private _home: HomeService
+    private _homeService: HomeService
   ) { }
 
 
@@ -78,11 +78,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (this._router.url === '/apod') {
 
-      this.oneDayApod$ = this._home.oneDayApod$(today)
+      this.oneDayApod$ = this._homeService.oneDayApod$(today)
         .subscribe(
           (data: Apod) => {
             localStorage.setItem('apod', JSON.stringify(data));
-            this._apod.setOneDayInfo(data);
+            this._apodInfo.setOneDayInfo(data);
 
             this._loadingBar.complete();
           },
@@ -96,11 +96,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       const threeDaysBefore = this.yyyyMMdd(this.getStartDate(now));
 
-      this.fourDaysApods$ = this._home.fourDaysApods$(today, threeDaysBefore)
+      this.fourDaysApods$ = this._homeService.fourDaysApods$(today, threeDaysBefore)
         .subscribe(
           (data: Array<Apod>) => {
             localStorage.setItem('last-four-days-apods', JSON.stringify(data));
-            this._apod.setFourDaysInfo(data);
+            this._apodInfo.setFourDaysInfo(data);
 
             this._loadingBar.complete();
           },
@@ -129,6 +129,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     const prevDate = prevMonthDays - 3 + date;
 
     return new Date(prevYear, prevMonth, prevDate);
+  }
+
+  goToHome() {
+    if (this._router.url === '/apod') {
+      this._router.navigate(['/']);
+    }
   }
 
   ngOnDestroy() {

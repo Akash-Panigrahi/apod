@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ApodService } from '../shared/apod.service';
+import { ApodInfoService } from '../shared/apod-info.service';
+import { ISubscription } from 'rxjs/Subscription';
+
 declare const $: any;
 
 import { Apod } from '../models/apod.model';
@@ -10,22 +12,22 @@ import { Apod } from '../models/apod.model';
   templateUrl: './apod.component.html',
   styleUrls: ['./apod.component.scss']
 })
-export class ApodComponent implements OnInit {
+export class ApodComponent implements OnInit, OnDestroy {
   apod: Apod;
+  private oneDayInfo$: ISubscription;
 
   constructor(
     private _sanitize: DomSanitizer,
-    private _apod: ApodService,
+    private _apodInfo: ApodInfoService,
   ) { }
 
 
   ngOnInit() {
     this.apod = JSON.parse(localStorage.getItem('apod'));
 
-    this._apod.oneDayInfo$
-      .subscribe((apod) => {
-        console.log(apod);
-        this.apod = apod;
+    this.oneDayInfo$ = this._apodInfo.oneDayInfo$
+      .subscribe((data) => {
+        this.apod = data;
       });
 
     // $(document).ready(function () {
@@ -37,5 +39,9 @@ export class ApodComponent implements OnInit {
     $(document).ready(function () {
       $('.apod__picture').toggleClass('apod__picture--fixed');
     });
+  }
+
+  ngOnDestroy() {
+    this.oneDayInfo$.unsubscribe();
   }
 }

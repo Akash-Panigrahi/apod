@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 /* Environment */
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { Apod } from '../models/apod.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,12 @@ export class HomeService {
     private _http: HttpClient
   ) { }
 
-  oneDayApod$(today: string) {
+  oneDayApod$(today: string): Observable<Apod> {
     return this._http
       .get(`https://api.nasa.gov/planetary/apod?api_key=${environment.NASA_API_KEY}&date=${today}`);
   }
 
-  fourDaysApods$(today: string, threeDaysBefore: string) {
+  fourDaysApods$(today: string, threeDaysBefore: string): Observable<Object> {
     return this._http
       .get(`https://api.nasa.gov/planetary/apod?api_key=${environment.NASA_API_KEY}&start_date=${threeDaysBefore}&end_date=${today}`);
   }
