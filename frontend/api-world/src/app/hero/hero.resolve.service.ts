@@ -9,6 +9,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 
+import { DateUtilsService } from '../shared/helpers/date-utils.service';
+
 @Injectable()
 export class HeroResolve implements Resolve<{}> {
 
@@ -19,13 +21,10 @@ export class HeroResolve implements Resolve<{}> {
   ) { }
 
   resolve(): Observable<{}> {
-    function yyyyMMdd(date) {
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    }
 
     const now = new Date();
-    const today = yyyyMMdd(now);
-    const threeDaysBefore = yyyyMMdd(new Date(new Date().setDate(now.getDate() - 3)));
+    const today = DateUtilsService.yyyyMMdd(now);
+    const threeDaysBefore = DateUtilsService.yyyyMMdd(new Date(new Date().setDate(now.getDate() - 3)));
 
     const originDate = localStorage.getItem('origin-date');
 
@@ -36,7 +35,7 @@ export class HeroResolve implements Resolve<{}> {
     return this._http
       .get(`https://api.nasa.gov/planetary/apod?api_key=${environment.NASA_API_KEY}&start_date=${threeDaysBefore}&end_date=${today}`)
       .map((data: Array<{}>) => {
-        localStorage.setItem('origin-date', JSON.stringify(yyyyMMdd(now)));
+        localStorage.setItem('origin-date', JSON.stringify(DateUtilsService.yyyyMMdd(now)));
         localStorage.setItem('last-four-days-apods', JSON.stringify(data));
         return data;
       })

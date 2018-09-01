@@ -11,7 +11,6 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -24,6 +23,7 @@ import { ApodInfoService } from '../shared/apod-info.service';
 import { WindowResizedService } from '../shared/window-resized.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { HomeService } from './home.service';
+import { DateUtilsService } from '../shared/helpers/date-utils.service';
 
 @Component({
   selector: 'app-home',
@@ -35,8 +35,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   apodOriginDate = new FormControl(new Date());
   minDate = new Date('1995-06-16');
   maxDate = new Date();
-  // originDate: string = JSON.parse(localStorage.getItem('origin-date'));
-  // originDate: Date = new Date(JSON.parse(localStorage.getItem('origin-date')));
 
   private oneDayApod$: ISubscription;
   private fourDaysApods$: ISubscription;
@@ -52,13 +50,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _loadingBar: SlimLoadingBarService,
     private _el: ElementRef,
     private _renderer: Renderer2,
-    private _homeService: HomeService
+    private _homeService: HomeService,
   ) { }
-
-
-  private yyyyMMdd(date) {
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  }
 
   ngOnInit() {
     this.width$ = this._windowResizedService.width$
@@ -72,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._loadingBar.start();
 
     const now = new Date(e.value);
-    const today = this.yyyyMMdd(now);
+    const today = DateUtilsService.yyyyMMdd(now);
 
     this._storage.setItem('origin-date', JSON.stringify(today));
 
@@ -94,7 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     } else if (this._router.url === '/') {
 
-      const threeDaysBefore = this.yyyyMMdd(this.getStartDate(now));
+      const threeDaysBefore = DateUtilsService.yyyyMMdd(DateUtilsService.getStartDate(now));
 
       this.fourDaysApods$ = this._homeService.fourDaysApods$(today, threeDaysBefore)
         .subscribe(
@@ -111,24 +104,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         );
 
     }
-
-  }
-
-  private getStartDate(currentDate: Date): Date {
-    const monthDays = [31, , 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const date = currentDate.getDate();
-
-    // if leap year
-    monthDays[1] = year % 4 ? 28 : 29;
-
-    const prevMonthDays = month ? monthDays[month - 1] : 31;
-    const prevMonth = month ? month - 1 : 12;
-    const prevYear = prevMonth === 12 ? year - 1 : year;
-    const prevDate = prevMonthDays - 3 + date;
-
-    return new Date(prevYear, prevMonth, prevDate);
   }
 
   goToHome() {
