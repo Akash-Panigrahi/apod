@@ -19,7 +19,10 @@ const routes: Routes = [
           apod: HeroResolve
         }
       },
-      { path: 'apod', component: ApodComponent }
+      {
+        path: 'apod', component: ApodComponent,
+        data: { title: 'Hero Component' }
+      }
     ]
   },
   { path: '404', component: PageNotFoundComponent },

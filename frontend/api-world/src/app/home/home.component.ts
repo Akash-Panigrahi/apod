@@ -3,13 +3,8 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ElementRef,
-  Renderer2
 } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse
-} from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
@@ -22,8 +17,8 @@ import { StorageService } from '../shared/storage.service';
 import { ApodInfoService } from '../shared/apod-info.service';
 import { WindowResizedService } from '../shared/window-resized.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
-import { HomeService } from './home.service';
 import { DateUtilsService } from '../shared/helpers/date-utils.service';
+import { NasaApiService } from '../shared/nasa-api.service';
 
 @Component({
   selector: 'app-home',
@@ -46,15 +41,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _storage: StorageService,
     private _apodInfo: ApodInfoService,
-    private _windowResizedService: WindowResizedService,
+    private _windowResized: WindowResizedService,
     private _loadingBar: SlimLoadingBarService,
-    private _el: ElementRef,
-    private _renderer: Renderer2,
-    private _homeService: HomeService,
+    private _nasaApi: NasaApiService,
   ) { }
 
   ngOnInit() {
-    this.width$ = this._windowResizedService.width$
+    this.width$ = this._windowResized.width$
       .subscribe(windowWidth => {
         this.isMobile = windowWidth <= 600 ? true : false;
       });
@@ -71,7 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (this._router.url === '/apod') {
 
-      this.oneDayApod$ = this._homeService.oneDayApod$(today)
+      this.oneDayApod$ = this._nasaApi.oneDayApod$(today)
         .subscribe(
           (data: Apod) => {
             localStorage.setItem('apod', JSON.stringify(data));
@@ -89,7 +82,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       const threeDaysBefore = DateUtilsService.yyyyMMdd(DateUtilsService.getStartDate(now));
 
-      this.fourDaysApods$ = this._homeService.fourDaysApods$(today, threeDaysBefore)
+      this.fourDaysApods$ = this._nasaApi.fourDaysApods$(today, threeDaysBefore)
         .subscribe(
           (data: Array<Apod>) => {
             localStorage.setItem('last-four-days-apods', JSON.stringify(data));

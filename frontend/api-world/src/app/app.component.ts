@@ -8,6 +8,7 @@ import {
   Event,
   Router
 } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,10 @@ export class AppComponent {
 
   constructor(
     private _loadingBar: SlimLoadingBarService,
-    private _router: Router
+    private _router: Router,
+    private _title: Title,
   ) {
+    this._title.setTitle('Astronomy Picture Of The Day');
     this._router.events
       .subscribe((event: Event) => {
         this.navigationInterceptor(event);
