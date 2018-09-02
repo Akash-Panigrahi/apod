@@ -1,4 +1,8 @@
-import { Router } from '@angular/router';
+import {
+  Router,
+  Event,
+  NavigationEnd
+} from '@angular/router';
 import {
   Component,
   OnInit,
@@ -8,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
+import { filter } from 'rxjs/operators';
 
 /* Models */
 import { Apod } from '../models/apod.model';
@@ -35,6 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private fourDaysApods$: ISubscription;
   private width$: ISubscription;
 
+  isHome: boolean;
   isMobile = false;
 
   constructor(
@@ -47,10 +53,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
     this.width$ = this._windowResized.width$
       .subscribe(windowWidth => {
         this.isMobile = windowWidth <= 600 ? true : false;
       });
+
+    // setting isHome property
+    // -- at component initialization
+    this.isHome = this._router.url === '/' ? true : false;
+    // -- for subsequent navigations
+    this._router.events
+      .pipe(
+        filter((event: Event) => event instanceof NavigationEnd)
+      )
+      .subscribe((event: NavigationEnd) => this.isHome = event.url === '/' ? true : false);
   }
 
   updateApod(e: MatDatepickerInputEvent<Date>) {
@@ -100,7 +117,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   goToHome() {
-    if (this._router.url === '/apod') {
+    if (this._router.url !== '/') {
       this._router.navigate(['/']);
     }
   }
