@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import 'rxjs/add/observable/fromEvent';
+import { Observable, BehaviorSubject, fromEvent } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ISubscription } from 'rxjs/Subscription';
 
 @Injectable()
@@ -11,10 +11,11 @@ export class WindowResizedService implements OnDestroy {
   constructor() {
     const windowSize$ = new BehaviorSubject(getWindowSize());
 
-    this.width$ = windowSize$.map(windowSize => windowSize.width);
+    this.width$ = windowSize$
+      .pipe(map(windowSize => windowSize.width));
 
-    this.$windowResize = Observable.fromEvent(window, 'resize')
-      .map(getWindowSize)
+    this.$windowResize = fromEvent(window, 'resize')
+      .pipe(map(getWindowSize))
       .subscribe(windowSize$);
   }
 

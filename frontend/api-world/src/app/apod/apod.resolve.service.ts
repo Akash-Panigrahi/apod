@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 /* Services */
 import { PageNotFoundInfoService } from './../shared/page-not-found-info.service';
@@ -29,24 +26,26 @@ export class HeroResolve implements Resolve<{}> {
     const originDate = localStorage.getItem('origin-date');
 
     if (originDate && (new Date(originDate) === new Date())) {
-      return Observable.of(JSON.parse(localStorage.getItem('last-four-days-apods')));
+      return of(JSON.parse(localStorage.getItem('last-four-days-apods')));
     }
 
     return this._nasaApi.fourDaysApods$(today, threeDaysBefore)
-      .map((data: Array<{}>) => {
-        localStorage.setItem('origin-date', today);
-        localStorage.setItem('last-four-days-apods', JSON.stringify(data));
+      .pipe(
+        map((data: Array<{}>) => {
+          localStorage.setItem('origin-date', today);
+          localStorage.setItem('last-four-days-apods', JSON.stringify(data));
 
-        return data;
-      })
-      .catch((err: HttpErrorResponse) => {
-        if (err.status === 400 || err.status === 404 || err.status === 403) {
-          this._pageNotFoundInfo.setErrorInfo(err);
-          this._router.navigate(['404']);
+          return data;
+        }),
+        catchError((err: HttpErrorResponse) => {
+          if (err.status === 400 || err.status === 404 || err.status === 403) {
+            this._pageNotFoundInfo.setErrorInfo(err);
+            this._router.navigate(['404']);
 
-          return Observable.throw(err);
-        }
-      });
+            return throwError(err);
+          }
+        })
+      );
   }
 
 }
