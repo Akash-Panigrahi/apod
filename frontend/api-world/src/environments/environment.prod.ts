@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  NASA_API_KEY: 'DEMO_KEY'
 };
