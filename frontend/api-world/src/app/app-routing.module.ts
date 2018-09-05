@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
 import { ApodComponent } from './apod/apod.component';
+import { IfApodInStorageGuard } from './apod/if-apod-in-storage.guard.service';
 
 const routes: Routes = [
   {
@@ -20,7 +21,9 @@ const routes: Routes = [
         }
       },
       {
-        path: 'apod', component: ApodComponent,
+        path: 'apod',
+        component: ApodComponent,
+        canActivate: [IfApodInStorageGuard],
         data: { title: 'Hero Component' }
       }
     ]

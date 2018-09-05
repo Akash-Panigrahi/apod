@@ -13,9 +13,8 @@ export class PageNotFoundComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.pageNotFoundInfo.errorInfo);
     this.pageNotFoundInfo.errorInfo
-      .subscribe(err => console.log(err));
+      .subscribe(err => console.error(err));
   }
 
 }

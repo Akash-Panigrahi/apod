@@ -18,7 +18,6 @@ import { filter } from 'rxjs/operators';
 import { Apod } from '../models/apod.model';
 
 /* Services */
-import { StorageService } from '../shared/storage.service';
 import { ApodInfoService } from '../shared/apod-info.service';
 import { WindowResizedService } from '../shared/window-resized.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
@@ -29,10 +28,9 @@ import { NasaApiService } from '../shared/nasa-api.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [WindowResizedService]
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  apodOriginDate = new FormControl(new Date());
+  apodOriginDate: FormControl;
   minDate = new Date('1995-06-16');
   maxDate = new Date();
 
@@ -45,7 +43,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _router: Router,
-    private _storage: StorageService,
     private _apodInfo: ApodInfoService,
     private _windowResized: WindowResizedService,
     private _loadingBar: SlimLoadingBarService,
@@ -53,6 +50,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    const date = localStorage.getItem('origin-date');
+    this.apodOriginDate = new FormControl(date ? new Date(date) : new Date());
 
     this.width$ = this._windowResized.width$
       .subscribe(windowWidth => {
@@ -71,13 +70,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   updateApod(e: MatDatepickerInputEvent<Date>) {
-    this._loadingBar.interval = 0;
+
     this._loadingBar.start();
 
     const now = new Date(e.value);
     const today = DateUtilsService.yyyyMMdd(now);
 
-    this._storage.setItem('origin-date', JSON.stringify(today));
+    localStorage.setItem('origin-date', JSON.stringify(today));
 
     if (this._router.url === '/apod') {
 
@@ -94,7 +93,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             this._loadingBar.stop();
           }
         );
-
     } else if (this._router.url === '/') {
 
       const threeDaysBefore = DateUtilsService.yyyyMMdd(DateUtilsService.getStartDate(now));
@@ -112,7 +110,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             this._loadingBar.stop();
           }
         );
-
     }
   }
 

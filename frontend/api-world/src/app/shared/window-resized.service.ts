@@ -3,7 +3,9 @@ import { Observable, BehaviorSubject, fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ISubscription } from 'rxjs/Subscription';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WindowResizedService implements OnDestroy {
   width$: Observable<number>;
   private $windowResize: ISubscription;
@@ -12,10 +14,14 @@ export class WindowResizedService implements OnDestroy {
     const windowSize$ = new BehaviorSubject(getWindowSize());
 
     this.width$ = windowSize$
-      .pipe(map(windowSize => windowSize.width));
+      .pipe(
+        map(windowSize => windowSize.width)
+      );
 
     this.$windowResize = fromEvent(window, 'resize')
-      .pipe(map(getWindowSize))
+      .pipe(
+        map(getWindowSize)
+      )
       .subscribe(windowSize$);
   }
 
