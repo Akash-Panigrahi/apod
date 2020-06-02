@@ -134,5 +134,8 @@
       }
     }
   },
-  "defaultProject": "api-world"
+  "defaultProject": "api-world",
+  "cli": {
+    "analytics": false
+  }
 }
