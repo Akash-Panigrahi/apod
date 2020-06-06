@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   NASA_API_KEY: 'SUfB6EQXljXPsVesooPbTqREkSqUO2ZIVBsLUugj'
+  // NASA_API_KEY: 'DEMO_KEY'
 };
 
 /*
