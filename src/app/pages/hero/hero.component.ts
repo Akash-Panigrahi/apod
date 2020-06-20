@@ -4,11 +4,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { AstronomyPictureOf } from '../models/astronomy-picture-of.model';
-import { Apod } from '../models/apod.model';
+import { AstronomyPictureOf } from '../../models/astronomy-picture-of.model';
+import { Apod } from '../../models/apod.model';
 
-import { ApodInfoService } from '../shared/apod-info.service';
-import { HomeComponent } from './../home/home.component';
+import { ApodInfoService } from '../../shared/apod-info.service';
 
 @Component({
   selector: 'app-hero',
@@ -24,7 +23,6 @@ export class HeroComponent implements OnInit, OnDestroy {
     private _sanitize: DomSanitizer,
     private _router: Router,
     private _apodInfo: ApodInfoService,
-    private _home: HomeComponent,
   ) { }
 
   ngOnInit() {
@@ -40,7 +38,7 @@ export class HeroComponent implements OnInit, OnDestroy {
   }
 
   setApod(apod: Apod): void {
-    this._home.apodOriginDate = new FormControl(new Date(apod.date));
+    // this._home.apodOriginDate = new FormControl(new Date(apod.date));
     localStorage.setItem('origin-date', JSON.stringify(apod.date));
     localStorage.setItem('apod', JSON.stringify(apod));
 

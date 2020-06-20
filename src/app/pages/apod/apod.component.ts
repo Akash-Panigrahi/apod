@@ -1,32 +1,33 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ApodInfoService } from '../shared/apod-info.service';
-import { ISubscription } from 'rxjs/Subscription';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { take } from 'rxjs/operators';
 
 declare const $: any;
 
-import { Apod } from '../models/apod.model';
+import { ApodInfoService } from '../../shared/apod-info.service';
+import { Apod } from '../../models/apod.model';
 
 @Component({
   selector: 'app-apod',
   templateUrl: './apod.component.html',
   styleUrls: ['./apod.component.scss']
 })
-export class ApodComponent implements OnInit, OnDestroy {
+export class ApodComponent implements OnInit {
   apod: Apod;
-  private oneDayInfo$: ISubscription;
+  url;
 
   constructor(
     public _sanitize: DomSanitizer,
     private _apodInfo: ApodInfoService,
   ) { }
 
-
   ngOnInit() {
-
-    this.oneDayInfo$ = this._apodInfo.oneDayInfo$
-      .subscribe((data) => {
+    this._apodInfo.oneDayInfo$
+      .pipe(take(1))
+      .subscribe((data: Apod) => {
         this.apod = data;
+        this.url = data.url;
       });
 
     if (localStorage.getItem('origin-date')) {
@@ -40,7 +41,7 @@ export class ApodComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.oneDayInfo$.unsubscribe();
+  toggleHD(e: MatSlideToggleChange): void {
+    this.url = e.checked ? this.apod.hdurl : this.apod.url;
   }
 }

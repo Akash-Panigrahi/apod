@@ -1,5 +1,5 @@
-@import "../../assets/styles/variables";
-@import "../../assets/styles/breakpoints";
+@import "../../../assets/styles/variables";
+@import "../../../assets/styles/breakpoints";
 
 @mixin apod {
   display: flex;
@@ -34,6 +34,9 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: white;
 
   @include for-phone-only {
     flex-direction: row-reverse;
@@ -52,10 +55,8 @@
 }
 
 .picture__video {
+  border-radius: 5px;
   @include flex--centered;
-  @include for-tablet-landscape-down {
-    border-radius: 5px;
-  }
 }
 
 .picture__image {
@@ -68,16 +69,12 @@
 .title__overlay {
   font-size: 6rem;
   padding: 20px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
   width: 100%;
-  color: white;
-  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   flex-direction: column;
+  border-radius: 0 0 5px 5px;
 }
 
 .picture__date {
@@ -90,6 +87,9 @@
 
   flex: 7;
   margin: 0 10px;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: white;
 
   @include for-tablet-landscape-down {
     margin-bottom: 10px;
@@ -144,10 +144,6 @@
 
 
     @include for-tablet-portrait-down {
-      position: absolute;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 1));
-      border-radius: 0;
-      color: white;
       justify-content: flex-end;
       align-items: flex-end;
       width: 100%;

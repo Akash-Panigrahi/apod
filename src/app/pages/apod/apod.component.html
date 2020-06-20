@@ -1,0 +1,53 @@
+<article class="apod-hero">
+  <section class="apod__media-container" id="focal">
+    <div class="apod__media-wrapper">
+      <div class="apod__media">
+        <figure class="apod__figure">
+          <picture class="apod__picture" *ngIf="apod.media_type=='image'">
+            <div class="apod__image-wrapper">
+              <img class="apod__image" [src]="url" [alt]="apod.title" (click)="openPictureDialog()">
+            </div>
+
+            <div class="apod__video-wrapper" *ngIf="apod.media_type=='video'">
+              <iframe class="apod__video" [src]="_sanitize.bypassSecurityTrustResourceUrl(url)" [name]="apod.title"
+                allowfullscreen>
+              </iframe>
+            </div>
+          </picture>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="apod__details">
+    <div class="apod__header">
+      <h3 class="apod__title">
+        {{ apod.title }}
+      </h3>
+      <time class="apod__date">
+        {{ apod.date }}
+      </time>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="apod__author-actions" *ngIf="apod.copyright || apod.hdurl">
+      <div class="apod__author" *ngIf="apod.copyright">
+        <h2 class="author__name">
+          By: {{ apod.copyright }}
+        </h2>
+      </div>
+      <div class="apod__actions" *ngIf="apod.hdurl">
+        <div class="load-hd-apod">
+          <mat-slide-toggle color="primary" (change)="toggleHD($event)">Load HD</mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+
+    <div class="apod__explanation">
+      <p class="apod__text">
+        {{ apod.explanation }}
+      </p>
+    </div>
+  </div>
+</article>

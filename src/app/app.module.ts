@@ -11,17 +11,13 @@ import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './home/home.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { ApodComponent } from './apod/apod.component';
-import { HeroComponent } from './hero/hero.component';
+import { ApodComponent } from './pages/apod/apod.component';
+import { HeroComponent } from './pages/hero/hero.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    PageNotFoundComponent,
     ApodComponent,
     HeroComponent,
   ],

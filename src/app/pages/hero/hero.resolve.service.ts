@@ -5,9 +5,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 /* Services */
-import { PageNotFoundInfoService } from './../shared/page-not-found-info.service';
-import { DateUtilsService } from '../shared/helpers/date-utils.service';
-import { NasaApiService } from '../shared/nasa-api.service';
+import { PageNotFoundInfoService } from '../../shared/page-not-found-info.service';
+import { DateUtilsService } from '../../shared/helpers/date-utils.service';
+import { NasaApiService } from '../../shared/nasa-api.service';
 
 @Injectable()
 export class HeroResolve implements Resolve<{}> {

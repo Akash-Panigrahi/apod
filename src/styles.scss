@@ -4,6 +4,10 @@
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 @import "~ng2-slim-loading-bar/style.css";
 
+* {
+  // outline: 1px solid red;
+}
+
 html,
 body {
   min-height: 100vh;
