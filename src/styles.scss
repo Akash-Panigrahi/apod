@@ -2,7 +2,6 @@
 @import "./assets/styles/variables";
 @import "./assets/styles/breakpoints";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-@import "~ng2-slim-loading-bar/style.css";
 
 * {
   // outline: 1px solid red;
@@ -12,7 +11,7 @@ html,
 body {
   min-height: 100vh;
   max-width: 100%;
-  font-family: 'Roboto', 'Open Sans', sans-serif;
+  font-family: "Roboto", "Open Sans", sans-serif;
   position: relative;
   font-size: 10px;
 
