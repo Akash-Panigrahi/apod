@@ -2,12 +2,12 @@
 @import "../../../assets/styles/breakpoints";
 
 :host,
-.apod-hero {
+.apod-home {
   flex: 1;
   display: flex;
 }
 
-.apod-hero {
+.apod-home {
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -107,7 +107,7 @@
   padding: 0 20px 0 10px;
   margin-top: 10px;
   font-size: 1.6rem;
-  margin-left: auto;;
+  margin-left: auto;
 }
 
 .separator {
@@ -139,6 +139,6 @@
   font-size: 1.8rem;
   padding: 20px;
   line-height: 1.58;
-  letter-spacing: -.004em;
+  letter-spacing: -0.004em;
   color: rgba(0, 0, 0, 0.84);
 }

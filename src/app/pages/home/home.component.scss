@@ -21,7 +21,7 @@
   display: flex;
 }
 
-.hero {
+.home {
   flex: 1;
   display: flex;
 
@@ -46,7 +46,7 @@
   }
 }
 
-.hero__media {
+.home__media {
   @include flex--centered;
 
   @include for-phone-only {
@@ -82,7 +82,7 @@
   margin-top: 1rem;
 }
 
-.hero__apod {
+.home__apod {
   @include apod;
 
   flex: 7;
@@ -96,14 +96,12 @@
     flex-direction: row;
   }
 
-
   @include for-phone-only {
     flex: none;
   }
 
-
-  .hero__media,
-  .hero__picture {
+  .home__media,
+  .home__picture {
     @include flex--centered;
 
     @include for-tablet-landscape-down {
@@ -111,7 +109,6 @@
       flex: 66.66%;
       border-radius: 0;
     }
-
 
     @include for-phone-only {
       flex: 1;
@@ -122,7 +119,6 @@
     @include for-tablet-landscape-down {
       border-radius: 5px 0 0 5px;
     }
-
 
     @include for-phone-only {
       border-radius: 5px;
@@ -141,7 +137,6 @@
       justify-content: flex-start;
       align-items: flex-start;
     }
-
 
     @include for-tablet-portrait-down {
       justify-content: flex-end;
@@ -177,7 +172,6 @@
     background: transparent;
   }
 
-
   @include for-phone-only {
     flex-direction: column;
     flex: none;
@@ -186,7 +180,6 @@
     border-top-right-radius: 5px;
     padding: 5px 5px 0 5px;
   }
-
 
   .old__apod {
     @include apod;
@@ -198,7 +191,6 @@
       margin-right: 10px;
     }
 
-
     @include for-phone-only {
       margin-bottom: 10px;
       margin-right: 0;
@@ -206,7 +198,6 @@
       padding: 10px;
       justify-content: center;
     }
-
 
     &:last-child {
       margin-bottom: 0;
@@ -237,8 +228,8 @@
     }
   }
 
-  .hero__media,
-  .hero__picture {
+  .home__media,
+  .home__picture {
     @include flex--centered;
 
     @include for-phone-only {
@@ -257,7 +248,6 @@
       border-radius: 5px;
     }
 
-
     @include for-phone-only {
       position: relative;
       width: auto;
@@ -267,7 +257,6 @@
       background: none;
       color: $black;
     }
-
 
     .picture__title {
       overflow: hidden;
@@ -357,7 +346,6 @@
   @include for-tablet-portrait-down {
     white-space: normal;
   }
-
 
   @include for-phone-only {
     white-space: nowrap;

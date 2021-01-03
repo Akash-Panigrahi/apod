@@ -1,44 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { take } from 'rxjs/operators';
+import { Component, OnInit } from "@angular/core";
+import { DomSanitizer } from "@angular/platform-browser";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+import { take } from "rxjs/operators";
 
-declare const $: any;
-
-import { ApodInfoService } from '../../shared/apod-info.service';
-import { Apod } from '../../models/apod.model';
+import { ApodInfoService } from "../../shared/apod-info.service";
+import { Apod } from "../../models/apod.model";
 
 @Component({
-  selector: 'app-apod',
-  templateUrl: './apod.component.html',
-  styleUrls: ['./apod.component.scss']
+  selector: "app-apod",
+  templateUrl: "./apod.component.html",
+  styleUrls: ["./apod.component.scss"],
 })
 export class ApodComponent implements OnInit {
   apod: Apod;
   url;
+  showPictureDialog = false;
 
   constructor(
-    public _sanitize: DomSanitizer,
-    private _apodInfo: ApodInfoService,
-  ) { }
+    public sanitize: DomSanitizer,
+    private apodInfo: ApodInfoService,
+  ) {}
 
   ngOnInit() {
-    this._apodInfo.oneDayInfo$
+    this.apodInfo.oneDayInfo$
       .pipe(take(1))
       .subscribe((data: Apod) => {
         this.apod = data;
         this.url = data.url;
       });
 
-    if (localStorage.getItem('origin-date')) {
-      this.apod = JSON.parse(localStorage.getItem('apod'));
+    if (sessionStorage.getItem("origin-date")) {
+      this.apod = JSON.parse(sessionStorage.getItem("apod"));
     }
   }
 
-  openPictureDialog() {
-    $(document).ready(function () {
-      $('.apod__picture').toggleClass('apod__picture--fixed');
-    });
+  togglePictureDialog() {
+    this.showPictureDialog = !this.showPictureDialog;
   }
 
   toggleHD(e: MatSlideToggleChange): void {

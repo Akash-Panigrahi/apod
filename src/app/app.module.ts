@@ -11,13 +11,14 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ApodComponent } from "./pages/apod/apod.component";
-import { HeroComponent } from "./pages/hero/hero.component";
+import { HomeComponent } from "./pages/home/home.component";
+import { DatePipe } from "@angular/common";
 
 @NgModule({
   declarations: [
     AppComponent,
     ApodComponent,
-    HeroComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +31,7 @@ import { HeroComponent } from "./pages/hero/hero.component";
     ReactiveFormsModule,
     MatButtonModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
 })

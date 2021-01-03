@@ -15,8 +15,8 @@
           [max]="maxDate"
           [matDatepicker]="picker"
           [formControl]="apodOriginDate"
-          (dateChange)="updateApod($event)"
           class="datepicker__input"
+          (dateChange)="updateApod($event)"
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isMobile" #picker></mat-datepicker>

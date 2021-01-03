@@ -12,7 +12,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { FormControl } from "@angular/forms";
 import { ISubscription } from "rxjs/Subscription";
-import { filter } from "rxjs/operators";
+import { filter, take } from "rxjs/operators";
 
 /* Models */
 import { Apod } from "./models/apod.model";
@@ -20,8 +20,8 @@ import { Apod } from "./models/apod.model";
 /* Services */
 import { ApodInfoService } from "./shared/apod-info.service";
 import { WindowResizedService } from "./shared/window-resized.service";
-import { DateUtilsService } from "./shared/helpers/date-utils.service";
 import { NasaApiService } from "./shared/nasa-api.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-root",
@@ -33,30 +33,27 @@ export class AppComponent implements OnInit, OnDestroy {
   apodOriginDate: FormControl;
   minDate = new Date("1995-06-16");
   maxDate = new Date();
-
-  private oneDayApod$: ISubscription;
-  private fourDaysApods$: ISubscription;
-  private width$: ISubscription;
-
-  isHome: boolean;
   isMobile = false;
+  private width$: ISubscription;
+  isHome: boolean;
 
   constructor(
-    private _router: Router,
+    private router: Router,
     private _title: Title,
-    private _apodInfo: ApodInfoService,
+    private apodInfo: ApodInfoService,
     private _windowResized: WindowResizedService,
     private _nasaApi: NasaApiService,
+    private datePipe: DatePipe,
   ) {
     this._title.setTitle("Astronomy Picture Of The Day");
-    this._router.events
+    this.router.events
       .subscribe((event: Event) => {
         this.navigationInterceptor(event);
       });
   }
 
   ngOnInit() {
-    const date = localStorage.getItem("origin-date");
+    const date = sessionStorage.getItem("origin-date");
     this.apodOriginDate = new FormControl(date ? new Date(date) : new Date());
 
     this.width$ = this._windowResized.width$
@@ -66,9 +63,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // setting isHome property
     // -- at component initialization
-    this.isHome = this._router.url === "/" ? true : false;
+    this.isHome = this.router.url === "/" ? true : false;
     // -- for subsequent navigations
-    this._router.events
+    this.router.events
       .pipe(
         filter((event: Event) => event instanceof NavigationEnd),
       )
@@ -79,8 +76,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.width$.unsubscribe();
-    this.oneDayApod$.unsubscribe();
-    this.fourDaysApods$.unsubscribe();
   }
 
   private navigationInterceptor(event: Event): void {
@@ -105,16 +100,17 @@ export class AppComponent implements OnInit, OnDestroy {
     // this._loadingBar.start();
 
     const now = new Date(e.value);
-    const today = DateUtilsService.yyyyMMdd(now);
+    const today = this.datePipe.transform(now, "yyyy-MM-dd");
 
-    localStorage.setItem("origin-date", JSON.stringify(today));
+    sessionStorage.setItem("origin-date", JSON.stringify(today));
 
-    if (this._router.url === "/apod") {
-      this.oneDayApod$ = this._nasaApi.oneDayApod$(today)
+    if (this.router.url === "/apod") {
+      this._nasaApi.oneDayApod$(today)
+        .pipe(take(1))
         .subscribe(
           (data: Apod) => {
-            localStorage.setItem("apod", JSON.stringify(data));
-            this._apodInfo.setOneDayInfo(data);
+            sessionStorage.setItem("apod", JSON.stringify(data));
+            this.apodInfo.setOneDayInfo(data);
 
             // this._loadingBar.complete();
           },
@@ -123,16 +119,27 @@ export class AppComponent implements OnInit, OnDestroy {
             // this._loadingBar.stop();
           },
         );
-    } else if (this._router.url === "/") {
-      const threeDaysBefore = DateUtilsService.yyyyMMdd(
-        DateUtilsService.getStartDate(now),
+    } else if (this.router.url === "/") {
+      const threeDaysBeforeDate = new Date(
+        now.getTime() - 24 * 60 * 60 * 1000 * 3,
+      );
+      const threeDaysBefore = this.datePipe.transform(
+        threeDaysBeforeDate,
+        "yyyy-MM-dd",
       );
 
-      this.fourDaysApods$ = this._nasaApi.fourDaysApods$(today, threeDaysBefore)
+      this._nasaApi.fourDaysApods$(
+        today,
+        threeDaysBefore,
+      )
+        .pipe(take(1))
         .subscribe(
           (data: Array<Apod>) => {
-            localStorage.setItem("last-four-days-apods", JSON.stringify(data));
-            this._apodInfo.setFourDaysInfo(data);
+            sessionStorage.setItem(
+              "last-four-days-apods",
+              JSON.stringify(data),
+            );
+            this.apodInfo.setFourDaysInfo(data);
 
             // this._loadingBar.complete();
           },
@@ -146,8 +153,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   goToHome() {
-    if (this._router.url !== "/") {
-      this._router.navigate(["/"]);
+    if (this.router.url !== "/") {
+      this.router.navigate(["/"]);
     }
   }
 }

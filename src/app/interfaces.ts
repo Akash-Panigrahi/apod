@@ -1,4 +1,4 @@
-export interface IApod {
+export interface Apod {
   copyright?: string;
   date?: string;
   explanation?: string;
@@ -9,14 +9,14 @@ export interface IApod {
   url?: string;
 }
 
-export interface IAstronomyPictureOf {
-  threeDaysBefore: IApod;
-  twoDaysBefore: IApod;
-  yesterday: IApod;
-  today: IApod;
+export interface AstronomyPictureOf {
+  threeDaysBefore: Apod;
+  twoDaysBefore: Apod;
+  yesterday: Apod;
+  today: Apod;
 }
 
-export interface ILocalStorageItem {
+export interface SessionStorageItem {
   key: string;
-  value: IAstronomyPictureOf;
+  value: AstronomyPictureOf;
 }
