@@ -1,24 +1,25 @@
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { catchError, map, take } from "rxjs/operators";
+import { catchError, map, take, takeUntil } from "rxjs/operators";
+import { DatePipe } from "@angular/common";
+import { of, Subject, throwError } from "rxjs";
+import { HttpErrorResponse } from "@angular/common/http";
+import { DomSanitizer } from "@angular/platform-browser";
 
 import { AstronomyPictureOf } from "../../models/astronomy-picture-of.model";
 import { Apod } from "../../models/apod.model";
-import { ApodInfoService } from "../../shared/apod-info.service";
-import { DatePipe } from "@angular/common";
-import { of, throwError } from "rxjs";
-import { NasaApiService } from "src/app/shared/nasa-api.service";
-import { HttpErrorResponse } from "@angular/common/http";
-import { PageNotFoundInfoService } from "src/app/shared/page-not-found-info.service";
-import { DomSanitizer } from "@angular/platform-browser";
+import { ApodInfoService } from "../../services/apod-info.service";
+import { NasaApiService } from "src/app/services/nasa-api.service";
+import { PageNotFoundInfoService } from "src/app/services/page-not-found-info.service";
 
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   apods: AstronomyPictureOf;
+  destroy = new Subject();
 
   constructor(
     public sanitize: DomSanitizer,
@@ -68,12 +69,17 @@ export class HomeComponent implements OnInit {
       });
 
     this.apodInfo.fourDaysInfo$
-      .pipe(take(1))
+      .pipe(takeUntil(this.destroy))
       .subscribe((data: Array<Apod>) => {
         if (data.length) {
           this.apods = new AstronomyPictureOf(...data);
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   setApod(apod: Apod): void {

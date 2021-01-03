@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
-import { take } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 
-import { ApodInfoService } from "../../shared/apod-info.service";
+import { ApodInfoService } from "../../services/apod-info.service";
 import { Apod } from "../../models/apod.model";
 
 @Component({
@@ -11,10 +12,11 @@ import { Apod } from "../../models/apod.model";
   templateUrl: "./apod.component.html",
   styleUrls: ["./apod.component.scss"],
 })
-export class ApodComponent implements OnInit {
+export class ApodComponent implements OnInit, OnDestroy {
   apod: Apod;
   url;
   showPictureDialog = false;
+  destroy = new Subject();
 
   constructor(
     public sanitize: DomSanitizer,
@@ -23,7 +25,7 @@ export class ApodComponent implements OnInit {
 
   ngOnInit() {
     this.apodInfo.oneDayInfo$
-      .pipe(take(1))
+      .pipe(takeUntil(this.destroy))
       .subscribe((data: Apod) => {
         this.apod = data;
         this.url = data.url;
@@ -32,6 +34,11 @@ export class ApodComponent implements OnInit {
     if (sessionStorage.getItem("origin-date")) {
       this.apod = JSON.parse(sessionStorage.getItem("apod"));
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   togglePictureDialog() {

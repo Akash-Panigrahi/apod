@@ -6,7 +6,7 @@
     "start": "ng serve --host 0.0.0.0",
     "build": "ng build --prod",
     "lint": "ng lint",
-    "publish": "surge --domain https://my-apod.surge.sh"
+    "publish": "surge ./dist --domain https://my-apod.surge.sh"
   },
   "private": true,
   "dependencies": {

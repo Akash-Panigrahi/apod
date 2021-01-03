@@ -18,9 +18,9 @@ import { filter, take } from "rxjs/operators";
 import { Apod } from "./models/apod.model";
 
 /* Services */
-import { ApodInfoService } from "./shared/apod-info.service";
-import { WindowResizedService } from "./shared/window-resized.service";
-import { NasaApiService } from "./shared/nasa-api.service";
+import { ApodInfoService } from "./services/apod-info.service";
+import { WindowResizedService } from "./services/window-resized.service";
+import { NasaApiService } from "./services/nasa-api.service";
 import { DatePipe } from "@angular/common";
 
 @Component({
